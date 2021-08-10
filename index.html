@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>CSF</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<style>
+		body {
+    background-color: black;
+}
+.csf {
+	color: white;
+	text-align: center;
+	font-size: 15pt;
+	font-family: "JetBrains Mono";
+}
+
+.menu {
+  margin-bottom: 75px;
+}
+
+.menu #before {
+  margin-right: 10px;
+}
+
+.about_us {
+	text-align: center;
+	font-size: 20pt;
+	font-family: "JetBrains Mono";
+}
+
+.projects {
+	text-align: center;
+	font-size: 20pt;
+	font-family: "JetBrains Mono";
+}
+
+.authors {
+	text-align: center;
+	font-size: 20pt;
+	font-family: "JetBrains Mono";
+}
+
+.about_us a:hover, .projects a:hover, .authors a:hover {
+	font-size: 25pt;
+  cursor: pointer;
+  transition: .2s all;
+}
+
+.laptop {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.laptop i {
+  font-size: 120px;
+  color: #fff;
+}
+
+footer {
+  text-align: center;
+  font-size: 25px;
+  color: #9900ff;
+}
+
+footer i {
+  font-size: 30px !important;
+  color: #fff;
+}
+
+footer a {
+  text-decoration: none;
+  color: #9900ff;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+footer a:hover {
+  font-size: 26px;
+  transition: 0.3s all;
+}
+
+footer #space {
+  color: #fff;
+}
+</style>
+
+	<div class="csf">
+	<hr width=35% style="border: 3px dashed #9900ff;"/><h1 id="demo" style="display: inline"></h1><hr width=35% style="border: 3px dashed #9900ff"/>
+	</div>
+	<br><br><br>
+	<div class="menu">
+		<div class="about_us">
+		<span id="before">»</span><a href="/pages/about-us/" style="color: #9900ff;">About Us</a>
+		</div>
+		<br><br>
+		<div class="projects">
+		<span id="before">»</span><a href="/pages/projects/" style="color: #9900ff;">Projects</a>
+		</div>
+		<br><br>
+		<div class="authors">
+			<span id="before">»</span><a href="/pages/contributors/" style="color: #9900ff;">Contributors</a>
+		</div>
+	</div>
+	<div class="laptop">
+		<i class="fa fa-laptop"></i>
+	</div>
+	<br><br>
+	<hr style="border: 1px solid #9900ff; width: 75%; margin-bottom: 25px;">
+	<footer>
+		<div class="instagram">
+			<i class="fa fa-instagram"></i><p><a href="https://www.instagram.com/cryp70m4n/">Mr. Pascal</a><span id="space">|</span><a href="https://www.instagram.com/gt.prox/">ProX</a><span id="space">|</span><a href="https://www.instagram.com/heteromorf">Akisha</a><p>
+		</div>
+	</footer>
+
+	<script>
+		var i = 0;
+var txt = 'Cow Software Foundation';
+var speed = 150;
+
+function typeWriter() {
+	if (i < txt.length) {
+		document.getElementById("demo").innerHTML += txt.charAt(i);
+		i++;
+		setTimeout(typeWriter, speed);
+	}
+}
+typeWriter();
+	</script>
+	<script src="typewritercsf.js"></script>
+</body>
+</html>
