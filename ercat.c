@@ -122,7 +122,7 @@ int main(int argc, char *argv[]) {
   	printf("%s\n", buffer);
   	write(new_socket, res, strlen(res));
   	close(new_socket);
-		fflush(stdout);
+	fflush(stdout);
 	}
 
 	return 0;
