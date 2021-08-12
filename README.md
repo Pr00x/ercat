@@ -9,4 +9,5 @@
 <hr>
 <h3>Usage:</h3><br>
 | ercat -p port<br><br>
-For Example: sudo ercat -p 80
+For Example: sudo ercat -p 80<br>
+<img src="https://i.ibb.co/CvfB39d/ercat.png">
