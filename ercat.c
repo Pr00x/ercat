@@ -3,10 +3,6 @@
 #include<unistd.h>
 #include<sys/socket.h>
 #include<netinet/in.h>
-#include<sys/types.h>
-#include<sys/stat.h>
-#include<arpa/inet.h>
-#include<netdb.h>
 #include<signal.h>
 #include<fcntl.h>
 #include<errno.h>
@@ -15,49 +11,31 @@
 #define MAX_CONNECTIONS 128
 
 char *root;
-int listenfd, clients[MAX_CONNECTIONS];
+int server_fd, clients[MAX_CONNECTIONS];
 
-void server_start(char *PORT) {
-	struct addrinfo sa, *res, *p;
-	int server_fd, new_socket;
-
-	memset(&sa, 0, sizeof(sa));
-	sa.ai_family = AF_INET;
-	sa.ai_socktype = SOCK_STREAM;
-	sa.ai_flags = AI_PASSIVE;
-
-	if(getaddrinfo(NULL, PORT, &sa, &res) != 0) {
-		perror("getaddrinfo()");
-		exit(EXIT_FAILURE);
-	}
+void server_start(int PORT) {
+	struct sockaddr_in sa;
 
 	if((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
 		perror("socket()");
 		exit(EXIT_FAILURE);
 	}
 
-	for(p = res; p != NULL; p = p -> ai_next) {
-		listenfd = socket(p -> ai_family, p -> ai_socktype, 0);
+	sa.sin_family = AF_INET;
+	sa.sin_addr.s_addr = htonl(INADDR_ANY);
+	sa.sin_port = htons(PORT);
+	
+	memset(sa.sin_zero, '\0', sizeof(sa.sin_zero));
 
-		if(listenfd == -1)
-			continue;
-
-		if(bind(listenfd, p -> ai_addr, p -> ai_addrlen) == 0)
-			break;
-	}
-
-	if(p == NULL) {
+	if(bind(server_fd, (struct sockaddr *)&sa, sizeof(sa)) < 0) {
 		perror("bind()");
 		exit(EXIT_FAILURE);
 	}
 
-	freeaddrinfo(res);
-
-	if(listen(listenfd, 10000) != 0) {
+	if(listen(server_fd, 10000) < 0) {
 		perror("listen()");
 		exit(EXIT_FAILURE);
 	}
-
 }
 
 void response(int n) {
@@ -130,7 +108,6 @@ void ercat() {
 	}
 
 	fclose(fp);
-
 }
 
 int main(int argc, char *argv[]) {
@@ -138,30 +115,25 @@ int main(int argc, char *argv[]) {
 		ercat();
 		printf("\n>> Usage: ercat [-p port]\n>> For Example: ercat -p 8000\n\n");
 
-		return 0;
+		return -1;
 	}
 
-	char PORT[6];
-
+	int PORT;
 	int opt = getopt(argc, argv, "p:");
 
 	switch(opt) {
 		case 'p':
-			strcpy(PORT, optarg);
+			PORT = atoi(optarg);
 			break;
 		default:
 			printf("\n\n");
 			return 1;
 	}
 
-	int check_port = atoi(PORT);
-
-	setuid(0);
-
-	if(check_port > 65535 || check_port < 1) {
+	if(PORT > 65535 || PORT < 1) {
 		printf("\nPlease enter the correct port!\n\n");
 
-		return 0;
+		return -1;
 	}
 
 	struct sockaddr_in clientaddr;
@@ -176,12 +148,12 @@ int main(int argc, char *argv[]) {
 	server_start(PORT);
 
 	ercat();
-	printf("\n>> Starting a HTTP Server on port %s...", PORT);
+	printf("\n>> Starting a HTTP Server on port %d...", PORT);
 	while(1) {
 		printf("\n-----------------------------------------\n\n");
 
 		addrlen = sizeof(clientaddr);
-		clients[slot] = accept(listenfd, (struct sockaddr *)&clientaddr, &addrlen);
+		clients[slot] = accept(server_fd, (struct sockaddr *)&clientaddr, (socklen_t *)&addrlen);
 
 		if(clients[slot] < 0) {
 			perror("accept()");

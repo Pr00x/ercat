@@ -5,5 +5,5 @@ install:
 	mkdir /etc/ercat/
 	cp ercat.txt /etc/ercat/
 clean:
-	rm /usr/bin/ercat
-	rm -rf /etc/ercat/
+	-rm /usr/bin/ercat
+	-rm -rf /etc/ercat/
